@@ -8,6 +8,8 @@ const getAllManage = async (req, res, next) => {
     const manages = Object.keys(data).map(key => Object.assign(data[key], { id: key} ))
     if(cardId) {
       const data = manages.find(manage => manage.manageId.cardId === cardId)
+      if(!data)
+        throw { code: 404, message: 'Not found cardId'}
       respondResult(res)(data)
       return
     }
