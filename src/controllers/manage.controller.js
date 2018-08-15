@@ -1,39 +1,46 @@
 const ManageModel = require('../model/manage')
+const { respondSuccess, respondResult, respondError } = require('../utils/response')
 
 const getAllManage = async (req, res, next) => {
   try {
+    const { cardId } = req.query
     const data = await ManageModel.findAll()
     const manages = Object.keys(data).map(key => Object.assign(data[key], { id: key} ))
-    res.status(200).send({ results: manages })
+    if(cardId) {
+      const data = manages.find(manage => manage.manageId.cardId === cardId)
+      respondResult(res)(data)
+      return
+    }
+    respondResult(res)(manages)
   }catch(err) {
-    res.status(500).send(err)
+    respondError(res)(err)
   }
 }
 
 const getManageById = async (req, res, next) => {
   try {
     const manage = await ManageModel.findById(req.params.id)
-    res.status(200).send({ results: manage })
+    respondResult(res)(manage)
   }catch(err) {
-    res.status(500).send(err)
+    respondError(res)(err)
   }
 }
 
 const createManage = async (req, res, next) => {
   try {
     await ManageModel.create(req.body)
-    res.status(200).send({ message: 'success' })
+    respondSuccess(res)()
   }catch(err) {
-    res.status(500).send(err)
+    respondError(res)(err)
   }
 }
 
 const updateManage = async (req, res, next) => {
   try {
     await ManageModel.update(req.params.id, req.body)
-    res.status(200).send({ message: 'success' })
+    respondSuccess(res)()
   }catch(err) {
-    res.status(500).send(err)
+    respondError(res)(err)
   }
 }
 
