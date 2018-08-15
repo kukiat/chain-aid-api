@@ -39,10 +39,19 @@ const findAll = () => {
   })
 }
 
-const update = (manageData) => {
-  const { id } = manageData
+const findById = (id) => {
   return new Promise((resolve, reject) => {
-    db.database().ref().child(`/${id}`).update(manageData)
+    db.database().ref().child(`/manage/${id}`).once('value')
+      .then(snap => resolve(Object.assign(snap.val(), { id: snap.key })))
+      .catch(err => reject(err))
+  })
+}
+
+const update = (id, body) => {
+  return new Promise((resolve, reject) => {
+    const manageData = createScheme(body)
+    const manageRef = db.database().ref().child(`manage/${id}`)
+    manageRef.update(manageData)
       .then(() => resolve('updated'))
       .catch(err => reject(err))
   })
@@ -61,5 +70,6 @@ const create =  (body) => {
 module.exports = {
   findAll,
   update,
-  create
+  create,
+  findById
 }

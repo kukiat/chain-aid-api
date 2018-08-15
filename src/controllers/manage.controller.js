@@ -10,6 +10,15 @@ const getAllManage = async (req, res, next) => {
   }
 }
 
+const getManageById = async (req, res, next) => {
+  try {
+    const manage = await ManageModel.findById(req.params.id)
+    res.status(200).send({ results: manage })
+  }catch(err) {
+    res.status(500).send(err)
+  }
+}
+
 const createManage = async (req, res, next) => {
   try {
     await ManageModel.create(req.body)
@@ -21,7 +30,7 @@ const createManage = async (req, res, next) => {
 
 const updateManage = async (req, res, next) => {
   try {
-    const response = await ManageModel.update(req.body)
+    await ManageModel.update(req.params.id, req.body)
     res.status(200).send({ message: 'success' })
   }catch(err) {
     res.status(500).send(err)
@@ -31,5 +40,6 @@ const updateManage = async (req, res, next) => {
 module.exports = {
   getAllManage,
   updateManage,
-  createManage
+  createManage,
+  getManageById
 }
