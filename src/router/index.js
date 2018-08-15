@@ -8,4 +8,10 @@ router.get('/manage', (req, res, next) => {
   })
 })
 
+router.get('/manage', (req, res, next) => {
+  res.status(200).send({
+    status: 'ok'
+  })
+})
+
 module.exports = router
