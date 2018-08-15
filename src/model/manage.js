@@ -1,6 +1,6 @@
 const db = require('./firebase')
 
-const ManageSchema = (manage) => ({
+const createScheme = (manage) => ({
   manageId: {
     patientId: manage.patientId || '',
     cardId: manage.cardId || '',
@@ -26,10 +26,12 @@ const ManageSchema = (manage) => ({
     address: manage.address || '',
     tel: manage.tel || '',
     email: manage.email || ''
-  }
+  },
+  createdAt: `${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}`,
+  updatedAt: `${new Date().toLocaleDateString()}-${new Date().toLocaleTimeString()}`
 })
 
-const getManageByCardId = (cardId) => {
+const findAll = () => {
   return new Promise((resolve, reject) => {
     db.database().ref('manage').once('value')
       .then(snap => resolve(snap.val()))
@@ -37,15 +39,7 @@ const getManageByCardId = (cardId) => {
   })
 }
 
-const getAllManage = (cardId) => {
-  return new Promise((resolve, reject) => {
-    db.database().ref('manage').once('value')
-      .then(snap => resolve(snap.val()))
-      .catch(err => reject(err))
-  })
-}
-
-const updateManageByCardId = (manageData) => {
+const update = (manageData) => {
   const { id } = manageData
   return new Promise((resolve, reject) => {
     db.database().ref().child(`/${id}`).update(manageData)
@@ -54,9 +48,9 @@ const updateManageByCardId = (manageData) => {
   })
 }
 
-const createManage =  (body) => {
+const create =  (body) => {
   return new Promise((resolve, reject) => {
-    const manageData = ManageSchema(body)
+    const manageData = createScheme(body)
     db.database().ref('manage').push(manageData)
       .then(() => resolve('created'))
       .catch(err => reject(err))
@@ -65,8 +59,7 @@ const createManage =  (body) => {
 
 
 module.exports = {
-  getManageByCardId,
-  updateManageByCardId,
-  createManage,
-  getAllManage
+  findAll,
+  update,
+  create
 }
