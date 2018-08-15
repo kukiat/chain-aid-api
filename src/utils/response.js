@@ -2,7 +2,7 @@ const respondSuccess = res => (message = 'success') => res.status(200).send({ me
 
 const respondResult = res => results => res.status(200).send({ results })
 
-const respondError = res => err => res.status(err.code || 500).send(err.message || { message: 'Internal Server Error' })
+const respondError = res => err => res.status(err.code || 500).send({ message: err.message || 'Internal Server Error' })
 
 module.exports = {
   respondSuccess,
