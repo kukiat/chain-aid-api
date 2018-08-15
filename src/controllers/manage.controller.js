@@ -30,7 +30,7 @@ const getManageById = async (req, res, next) => {
 
 const createManage = async (req, res, next) => {
   try {
-    await ManageModel.create(req.body)
+    const manage = await ManageModel.create(req.body)
     respondSuccess(res)()
   }catch(err) {
     respondError(res)(err)
@@ -39,8 +39,8 @@ const createManage = async (req, res, next) => {
 
 const updateManage = async (req, res, next) => {
   try {
-    await ManageModel.update(req.params.id, req.body)
-    respondSuccess(res)()
+    const manage = await ManageModel.update(req.params.id, req.body)
+    respondResult(res)(manage)
   }catch(err) {
     respondError(res)(err)
   }

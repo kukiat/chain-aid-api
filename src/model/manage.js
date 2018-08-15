@@ -52,7 +52,7 @@ const update = (id, body) => {
     const manageData = createScheme(body)
     const manageRef = db.database().ref().child(`manage/${id}`)
     manageRef.update(manageData)
-      .then(() => resolve('updated'))
+      .then(() => resolve(Object.assign(manageData, { id })))
       .catch(err => reject(err))
   })
 }
