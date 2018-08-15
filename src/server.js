@@ -6,7 +6,7 @@ const routes = require('./router')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
-
+app.get('/', (req, res) => res.send({ status: 'ok' }))
 app.use('/api', routes)
 
 const PORT = process.env.PORT || 3001
